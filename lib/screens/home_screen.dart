@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import '../utils/coin_data.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -10,6 +12,72 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  String selectedCurrency = 'USD';
+
+  // create the list of dropdown items for Android DropdownButton
+  List<DropdownMenuItem<String>> getDropdownItems() {
+    List<DropdownMenuItem<String>> dropdownItemsList = [];
+    for (String currency in currenciesList) {
+      var newItem = DropdownMenuItem<String>(
+        value: currency,
+        child: Text(currency),
+      );
+      dropdownItemsList.add(newItem);
+    }
+    return dropdownItemsList;
+  }
+
+  // create the list of dropdown items for  for iOS CupertinoPicker
+  List<Widget> getPickerItems() {
+    List<Text> pickerItemsList = [];
+    for (String currency in currenciesList) {
+      pickerItemsList.add(Text(
+          currency,
+          style: const TextStyle(color: Colors.white),
+      ));
+    }
+    return pickerItemsList;
+  }
+
+  // display DropdownButton or CupertinoPicker based on platform
+  Widget getPicker() {
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      return
+        CupertinoPicker(
+          selectionOverlay: Container(),
+          itemExtent: 32.0,
+          onSelectedItemChanged: (selectedIndex) {
+            print(selectedIndex);
+          },
+          children: getPickerItems(),
+        );
+    } else if (Theme.of(context).platform == TargetPlatform.android) {
+      return
+        Center(
+          child: DropdownButton<String>(
+            menuMaxHeight: 200.0,
+            elevation: 8,
+            dropdownColor: Colors.lightBlueAccent,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18.0,
+            ),
+            iconEnabledColor: Colors.white,
+            underline: Container(),
+            value: selectedCurrency,
+            items: getDropdownItems(),
+            onChanged: (value) {
+              setState(() {
+                selectedCurrency = value!;
+              });
+            },
+          ),
+        );
+    } else {
+      return const Text('Platform not supported');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +126,10 @@ class _HomeScreenState extends State<HomeScreen> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
+              width: double.infinity,
               height: 150.0,
               color: Colors.blue,
+              child: getPicker(),
             ),
           ),
       ],
