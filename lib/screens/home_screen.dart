@@ -162,11 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ) :
                             Center(
                               child: Text(
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                                style: kCardTextStyle,
                                 '1 BTC = $btcRate $selectedCurrency',
                               ),
                             ),
@@ -194,11 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ) :
                             Center(
                               child: Text(
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                                style: kCardTextStyle,
                                 '1 ETH = $ethRate $selectedCurrency',
                               ),
                             ),
@@ -226,11 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ) :
                             Center(
                               child: Text(
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                                style: kCardTextStyle,
                                 '1 LTC = $ltcRate $selectedCurrency',
                               ),
                             ),
@@ -248,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.all(4.0),
                           child: ListTile(
                             leading: const Image(
-                              image: AssetImage('images/litecoin_logo.png'),
+                              image: AssetImage('images/doge_logo.png'),
                               width: 32.0,
                               height: 32.0,
                             ),
@@ -258,11 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ) :
                             Center(
                               child: Text(
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                                style: kCardTextStyle,
                                 '1 DOGE = $dogeRate $selectedCurrency',
                               ),
                             ),
@@ -280,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.all(4.0),
                           child: ListTile(
                             leading: const Image(
-                              image: AssetImage('images/litecoin_logo.png'),
+                              image: AssetImage('images/xrp_logo.png'),
                               width: 32.0,
                               height: 32.0,
                             ),
@@ -290,11 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ) :
                             Center(
                               child: Text(
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                                style: kCardTextStyle,
                                 '1 XRP = $xrpRate $selectedCurrency',
                               ),
                             ),
@@ -312,7 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.all(4.0),
                           child: ListTile(
                             leading: const Image(
-                              image: AssetImage('images/litecoin_logo.png'),
+                              image: AssetImage('images/ada_logo.png'),
                               width: 32.0,
                               height: 32.0,
                             ),
@@ -322,11 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ) :
                             Center(
                               child: Text(
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                                style: kCardTextStyle,
                                 '1 ADA = $adaRate $selectedCurrency',
                               ),
                             ),
@@ -344,9 +320,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.all(4.0),
                           child: ListTile(
                             leading: const Image(
-                              image: AssetImage('images/litecoin_logo.png'),
-                              width: 32.0,
-                              height: 32.0,
+                              image: AssetImage('images/usdt_logo.png'),
+                              width: 40.0,
+                              height: 40.0,
                             ),
                             title: isLoading ?
                             const Center(
@@ -354,11 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ) :
                             Center(
                               child: Text(
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                                style: kCardTextStyle,
                                 '1 USDT = $usdtRate $selectedCurrency',
                               ),
                             ),

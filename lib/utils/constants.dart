@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 const List<String> currenciesList = [
   'AUD',
   'BRL',
@@ -32,3 +34,9 @@ const List<String> cryptoList = [
   'DOT',
 ];
 const coinApiBaseURL = 'https://rest.coinapi.io/v1/exchangerate';
+const apiKey = 'your_api_key_here';
+const kCardTextStyle = TextStyle(
+  fontSize: 16.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.white,
+);
