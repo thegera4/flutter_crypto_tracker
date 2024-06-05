@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import '../utils/coin_data.dart';
+import '../utils/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -14,6 +15,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   String selectedCurrency = 'USD';
+  String btcRate = '0';
+  String ethRate = '0';
+  String ltcRate = '0';
+  String dogeRate = '0';
+  String xrpRate = '0';
+  String adaRate = '0';
+  String usdtRate = '0';
+  bool isLoading = false;
 
   // create the list of dropdown items for Android DropdownButton
   List<DropdownMenuItem<String>> getDropdownItems() {
@@ -48,7 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
           selectionOverlay: Container(),
           itemExtent: 32.0,
           onSelectedItemChanged: (selectedIndex) {
-            print(selectedIndex);
+            setState(() {
+              selectedCurrency = currenciesList[selectedIndex];
+              getRates(selectedCurrency);
+            });
           },
           children: getPickerItems(),
         );
@@ -70,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onChanged: (value) {
               setState(() {
                 selectedCurrency = value!;
+                getRates(selectedCurrency);
               });
             },
           ),
@@ -77,6 +90,30 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       return const Text('Platform not supported');
     }
+  }
+
+  // call the CoinData class to get exchange rates and update the UI
+  Future<void> getRates(String selectedCurrency) async {
+    setState(() { isLoading = true; });
+    CoinData coinData = CoinData();
+    var exchangeRateMap = await coinData.getExchangeRates(selectedCurrency);
+    setState(() {
+      btcRate = exchangeRateMap['BTC']!;
+      ethRate = exchangeRateMap['ETH']!;
+      ltcRate = exchangeRateMap['LTC']!;
+      dogeRate = exchangeRateMap['DOGE']!;
+      xrpRate = exchangeRateMap['XRP']!;
+      adaRate = exchangeRateMap['ADA']!;
+      usdtRate = exchangeRateMap['USDT']!;
+      isLoading = false;
+    });
+  }
+
+  // get the initial rates (in USD) when the app starts
+  @override
+  void initState() {
+    super.initState();
+    getRates(selectedCurrency);
   }
 
   @override
@@ -98,37 +135,255 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Stack(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(16.0),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
             child: SizedBox(
               width: double.infinity,
-              child: Column(
-                children: <Widget>[
-                  Card(
-                    elevation: 5.0,
-                    color: Colors.lightBlueAccent,
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          '1 BTC = 50,000 USD'
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.only(bottom: 150.0),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      width: double.infinity,
+                      child: Card(
+                        elevation: 5.0,
+                        color: Colors.lightBlueAccent,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: ListTile(
+                            leading: const Image(
+                              image: AssetImage('images/bitcoin_icon.png'),
+                              width: 32.0,
+                              height: 32.0,
+                            ),
+                            title: isLoading ?
+                            const Center(
+                                child: CircularProgressIndicator(color: Colors.white,)
+                            ) :
+                            Center(
+                              child: Text(
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                '1 BTC = $btcRate $selectedCurrency',
+                              ),
+                            ),
+                          )
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 8.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Card(
+                        elevation: 5.0,
+                        color: Colors.lightBlueAccent,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: ListTile(
+                            leading: const Image(
+                              image: AssetImage('images/ethereum_logo.png'),
+                              width: 32.0,
+                              height: 32.0,
+                            ),
+                            title: isLoading ?
+                            const Center(
+                                child: CircularProgressIndicator(color: Colors.white,)
+                            ) :
+                            Center(
+                              child: Text(
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                '1 ETH = $ethRate $selectedCurrency',
+                              ),
+                            ),
+                          ),
+                          )
+                        ),
+                      ),
+                    const SizedBox(height: 8.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Card(
+                        elevation: 5.0,
+                        color: Colors.lightBlueAccent,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: ListTile(
+                            leading: const Image(
+                              image: AssetImage('images/litecoin_logo.png'),
+                              width: 32.0,
+                              height: 32.0,
+                            ),
+                            title: isLoading ?
+                            const Center(
+                              child: CircularProgressIndicator(color: Colors.white,),
+                            ) :
+                            Center(
+                              child: Text(
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                '1 LTC = $ltcRate $selectedCurrency',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Card(
+                        elevation: 5.0,
+                        color: Colors.lightBlueAccent,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: ListTile(
+                            leading: const Image(
+                              image: AssetImage('images/litecoin_logo.png'),
+                              width: 32.0,
+                              height: 32.0,
+                            ),
+                            title: isLoading ?
+                            const Center(
+                              child: CircularProgressIndicator(color: Colors.white,),
+                            ) :
+                            Center(
+                              child: Text(
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                '1 DOGE = $dogeRate $selectedCurrency',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Card(
+                        elevation: 5.0,
+                        color: Colors.lightBlueAccent,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: ListTile(
+                            leading: const Image(
+                              image: AssetImage('images/litecoin_logo.png'),
+                              width: 32.0,
+                              height: 32.0,
+                            ),
+                            title: isLoading ?
+                            const Center(
+                              child: CircularProgressIndicator(color: Colors.white,),
+                            ) :
+                            Center(
+                              child: Text(
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                '1 XRP = $xrpRate $selectedCurrency',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Card(
+                        elevation: 5.0,
+                        color: Colors.lightBlueAccent,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: ListTile(
+                            leading: const Image(
+                              image: AssetImage('images/litecoin_logo.png'),
+                              width: 32.0,
+                              height: 32.0,
+                            ),
+                            title: isLoading ?
+                            const Center(
+                              child: CircularProgressIndicator(color: Colors.white,),
+                            ) :
+                            Center(
+                              child: Text(
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                '1 ADA = $adaRate $selectedCurrency',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Card(
+                        elevation: 5.0,
+                        color: Colors.lightBlueAccent,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: ListTile(
+                            leading: const Image(
+                              image: AssetImage('images/litecoin_logo.png'),
+                              width: 32.0,
+                              height: 32.0,
+                            ),
+                            title: isLoading ?
+                            const Center(
+                              child: CircularProgressIndicator(color: Colors.white,),
+                            ) :
+                            Center(
+                              child: Text(
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                '1 USDT = $usdtRate $selectedCurrency',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                  ],
+                ),
               ),
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0),
+                ),
+              ),
               width: double.infinity,
               height: 150.0,
-              color: Colors.blue,
               child: getPicker(),
             ),
           ),
